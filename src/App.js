@@ -1,23 +1,57 @@
-import logo from './logo.svg';
+import React,{useContext, useState} from 'react'
 import './App.css';
+
+const CounterContext=React.createContext();
+
+function CounterProvider({children}){
+  const [count, setCount]=useState(0)
+
+  const increment=()=>{
+    setCount(count+37)
+  }
+
+const decrement=()=>{
+  setCount(count-1)
+}
+
+const archement=()=>{
+  setCount(count==0)
+}
+
+
+ const counterContextValue={
+  count,
+  increment,
+  decrement,
+  archement
+ }
+ return(
+  <CounterContext.Provider value={counterContextValue}>
+    {children}
+  </CounterContext.Provider>
+ )
+}
+
+function CounterDisplay(){
+  const counterContext=useContext(CounterContext)
+
+  return(
+    <div>
+    <p>Count:{counterContext.count}</p>
+    <button onClick={counterContext.increment}>increment</button>
+    <button onClick={counterContext.decrement}>decrement</button>
+    <button onClick={counterContext.archement}>archement</button>
+    </div>
+  )
+}
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <CounterProvider>
+        <CounterDisplay/>
+      </CounterProvider>
     </div>
   );
 }
